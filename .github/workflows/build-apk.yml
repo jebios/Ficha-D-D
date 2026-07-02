@@ -16,7 +16,7 @@ jobs:
 
       - name: Compilar APK com a imagem oficial do Buildozer
         run: |
-          docker run --rm \
+          yes | docker run --rm --interactive \
             --volume "${{ github.workspace }}":/home/user/hostcwd \
             ghcr.io/kivy/buildozer:latest \
             android debug
