@@ -1,0 +1,691 @@
+#:import dp kivy.metrics.dp
+
+<SectionLabel@Label>:
+    bold: True
+    font_size: '18sp'
+    color: 0.55, 0.18, 0.18, 1
+    size_hint_y: None
+    height: dp(32)
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.size
+
+<FieldLabel@Label>:
+    color: 0.2, 0.2, 0.2, 1
+    font_size: '13sp'
+    size_hint_y: None
+    height: dp(20)
+    halign: 'left'
+    text_size: self.size
+
+<StyledInput@TextInput>:
+    multiline: False
+    size_hint_y: None
+    height: dp(40)
+    font_size: '15sp'
+    padding: [dp(8), dp(8), dp(8), dp(8)]
+
+<StyledButton@Button>:
+    background_normal: ''
+    background_color: 0.55, 0.18, 0.18, 1
+    color: 1, 1, 1, 1
+    size_hint_y: None
+    height: dp(44)
+
+<SmallButton@Button>:
+    background_normal: ''
+    background_color: 0.7, 0.55, 0.25, 1
+    color: 1, 1, 1, 1
+    size_hint: None, None
+    size: dp(40), dp(40)
+
+
+# ---------------------------------------------------------------------
+# Linha de personagem na lista
+# ---------------------------------------------------------------------
+<CharacterRow>:
+    size_hint_y: None
+    height: dp(64)
+    padding: dp(10)
+    spacing: dp(10)
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.93, 0.87, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.char_name
+            color: 0.1, 0.1, 0.1, 1
+            bold: True
+            halign: 'left'
+            text_size: self.size
+        Label:
+            text: root.char_summary
+            color: 0.4, 0.4, 0.4, 1
+            font_size: '12sp'
+            halign: 'left'
+            text_size: self.size
+
+    Button:
+        text: 'Abrir'
+        size_hint_x: None
+        width: dp(70)
+        background_normal: ''
+        background_color: 0.55, 0.18, 0.18, 1
+        color: 1, 1, 1, 1
+        on_release: app.sm.get_screen('list').open_character(root.char_id)
+
+    Button:
+        text: 'X'
+        size_hint_x: None
+        width: dp(40)
+        background_normal: ''
+        background_color: 0.6, 0.15, 0.15, 1
+        color: 1, 1, 1, 1
+        on_release: app.sm.get_screen('list').ask_delete(root.char_id, root.char_name)
+
+
+<AttackRow>:
+    size_hint_y: None
+    height: dp(36)
+    spacing: dp(6)
+    Label:
+        text: root.attack_name
+        color: 0.1, 0.1, 0.1, 1
+        text_size: self.size
+        halign: 'left'
+        valign: 'middle'
+    Label:
+        text: root.attack_bonus
+        size_hint_x: None
+        width: dp(46)
+        color: 0.1, 0.1, 0.1, 1
+    Label:
+        text: root.attack_damage
+        size_hint_x: None
+        width: dp(70)
+        color: 0.1, 0.1, 0.1, 1
+    Button:
+        text: 'Editar'
+        size_hint_x: None
+        width: dp(56)
+        background_normal: ''
+        background_color: 0.7, 0.55, 0.25, 1
+        color: 1, 1, 1, 1
+        on_release: app.sm.get_screen('sheet').edit_attack(root.index)
+    Button:
+        text: '-'
+        size_hint_x: None
+        width: dp(36)
+        background_normal: ''
+        background_color: 0.6, 0.15, 0.15, 1
+        color: 1, 1, 1, 1
+        on_release: app.sm.get_screen('sheet').remove_attack(root.index)
+
+
+<InventoryRow>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(52)
+    spacing: dp(2)
+    padding: [0, dp(2)]
+    BoxLayout:
+        size_hint_y: None
+        height: dp(34)
+        spacing: dp(6)
+        Label:
+            text: root.item_name
+            color: 0.1, 0.1, 0.1, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+        Label:
+            text: root.item_qty
+            size_hint_x: None
+            width: dp(46)
+            color: 0.1, 0.1, 0.1, 1
+        Button:
+            text: 'Editar'
+            size_hint_x: None
+            width: dp(56)
+            background_normal: ''
+            background_color: 0.7, 0.55, 0.25, 1
+            color: 1, 1, 1, 1
+            on_release: app.sm.get_screen('sheet').edit_item(root.index)
+        Button:
+            text: '-'
+            size_hint_x: None
+            width: dp(36)
+            background_normal: ''
+            background_color: 0.6, 0.15, 0.15, 1
+            color: 1, 1, 1, 1
+            on_release: app.sm.get_screen('sheet').remove_item(root.index)
+    Label:
+        text: root.item_notes
+        color: 0.5, 0.5, 0.5, 1
+        font_size: '12sp'
+        size_hint_y: None
+        height: dp(16)
+        halign: 'left'
+        valign: 'middle'
+        text_size: self.size
+        shorten: True
+        shorten_from: 'right'
+
+
+<HistoryRow>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(50)
+    padding: [dp(4), dp(2)]
+    Label:
+        text: root.entry_timestamp
+        font_size: '11sp'
+        color: 0.5, 0.5, 0.5, 1
+        size_hint_y: None
+        height: dp(16)
+        halign: 'left'
+        text_size: self.size
+    Label:
+        text: root.entry_text
+        color: 0.1, 0.1, 0.1, 1
+        size_hint_y: None
+        height: dp(30)
+        halign: 'left'
+        text_size: self.size
+
+
+<SpellRow>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(52)
+    spacing: dp(2)
+    padding: [0, dp(2)]
+    BoxLayout:
+        size_hint_y: None
+        height: dp(34)
+        spacing: dp(6)
+        Label:
+            text: root.spell_name
+            color: 0.1, 0.1, 0.1, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+        Label:
+            text: root.spell_level
+            size_hint_x: None
+            width: dp(64)
+            color: 0.1, 0.1, 0.1, 1
+        Button:
+            text: 'Editar'
+            size_hint_x: None
+            width: dp(56)
+            background_normal: ''
+            background_color: 0.7, 0.55, 0.25, 1
+            color: 1, 1, 1, 1
+            on_release: app.sm.get_screen('sheet').edit_spell(root.index)
+        Button:
+            text: '-'
+            size_hint_x: None
+            width: dp(36)
+            background_normal: ''
+            background_color: 0.6, 0.15, 0.15, 1
+            color: 1, 1, 1, 1
+            on_release: app.sm.get_screen('sheet').remove_spell(root.index)
+    Label:
+        text: root.spell_notes
+        color: 0.5, 0.5, 0.5, 1
+        font_size: '12sp'
+        size_hint_y: None
+        height: dp(16)
+        halign: 'left'
+        valign: 'middle'
+        text_size: self.size
+        shorten: True
+        shorten_from: 'right'
+
+
+# ---------------------------------------------------------------------
+# Tela: lista de personagens
+# ---------------------------------------------------------------------
+<CharacterListScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.98, 0.94, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(12)
+            canvas.before:
+                Color:
+                    rgba: 0.55, 0.18, 0.18, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: 'Minhas Fichas'
+                bold: True
+                font_size: '20sp'
+
+        RecycleView:
+            id: char_rv
+            viewclass: 'CharacterRow'
+            RecycleBoxLayout:
+                default_size: None, dp(64)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+                spacing: dp(2)
+
+        StyledButton:
+            text: '+ Novo Personagem'
+            size_hint_y: None
+            height: dp(52)
+            on_release: root.new_character()
+
+
+# ---------------------------------------------------------------------
+# Tela: ficha do personagem
+# ---------------------------------------------------------------------
+<SheetScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.98, 0.94, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(10)
+            spacing: dp(8)
+            canvas.before:
+                Color:
+                    rgba: 0.55, 0.18, 0.18, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                text: '< Voltar'
+                size_hint_x: None
+                width: dp(90)
+                background_normal: ''
+                background_color: 0.4, 0.12, 0.12, 1
+                color: 1, 1, 1, 1
+                on_release: root.save_and_back()
+            Label:
+                text: 'Ficha do Personagem'
+                bold: True
+                font_size: '18sp'
+            Button:
+                text: 'Apagar'
+                size_hint_x: None
+                width: dp(80)
+                background_normal: ''
+                background_color: 0.3, 0.08, 0.08, 1
+                color: 1, 1, 1, 1
+                on_release: root.delete_and_back()
+
+        ScrollView:
+            do_scroll_x: False
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(14)
+                spacing: dp(6)
+
+                SectionLabel:
+                    text: 'Informações Básicas'
+                FieldLabel:
+                    text: 'Nome'
+                StyledInput:
+                    id: name_input
+                FieldLabel:
+                    text: 'Raça / Linhagem'
+                StyledInput:
+                    id: race_input
+                FieldLabel:
+                    text: 'Classe'
+                StyledInput:
+                    id: class_input
+                FieldLabel:
+                    text: 'Subclasse'
+                StyledInput:
+                    id: subclass_input
+                FieldLabel:
+                    text: 'Antecedente'
+                StyledInput:
+                    id: background_input
+                FieldLabel:
+                    text: 'Nível'
+                StyledInput:
+                    id: level_input
+                    input_filter: 'int'
+
+                SectionLabel:
+                    text: 'Atributos'
+                GridLayout:
+                    cols: 6
+                    size_hint_y: None
+                    height: dp(80)
+                    spacing: dp(4)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        Label:
+                            text: 'FOR'
+                            color: 0.4,0.4,0.4,1
+                            size_hint_y: None
+                            height: dp(16)
+                        StyledInput:
+                            id: str_score
+                            input_filter: 'int'
+                            halign: 'center'
+                        Label:
+                            id: str_mod
+                            color: 0.1,0.1,0.1,1
+                            size_hint_y: None
+                            height: dp(18)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        Label:
+                            text: 'DES'
+                            color: 0.4,0.4,0.4,1
+                            size_hint_y: None
+                            height: dp(16)
+                        StyledInput:
+                            id: dex_score
+                            input_filter: 'int'
+                            halign: 'center'
+                        Label:
+                            id: dex_mod
+                            color: 0.1,0.1,0.1,1
+                            size_hint_y: None
+                            height: dp(18)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        Label:
+                            text: 'CON'
+                            color: 0.4,0.4,0.4,1
+                            size_hint_y: None
+                            height: dp(16)
+                        StyledInput:
+                            id: con_score
+                            input_filter: 'int'
+                            halign: 'center'
+                        Label:
+                            id: con_mod
+                            color: 0.1,0.1,0.1,1
+                            size_hint_y: None
+                            height: dp(18)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        Label:
+                            text: 'INT'
+                            color: 0.4,0.4,0.4,1
+                            size_hint_y: None
+                            height: dp(16)
+                        StyledInput:
+                            id: int_score
+                            input_filter: 'int'
+                            halign: 'center'
+                        Label:
+                            id: int_mod
+                            color: 0.1,0.1,0.1,1
+                            size_hint_y: None
+                            height: dp(18)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        Label:
+                            text: 'SAB'
+                            color: 0.4,0.4,0.4,1
+                            size_hint_y: None
+                            height: dp(16)
+                        StyledInput:
+                            id: wis_score
+                            input_filter: 'int'
+                            halign: 'center'
+                        Label:
+                            id: wis_mod
+                            color: 0.1,0.1,0.1,1
+                            size_hint_y: None
+                            height: dp(18)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        Label:
+                            text: 'CAR'
+                            color: 0.4,0.4,0.4,1
+                            size_hint_y: None
+                            height: dp(16)
+                        StyledInput:
+                            id: cha_score
+                            input_filter: 'int'
+                            halign: 'center'
+                        Label:
+                            id: cha_mod
+                            color: 0.1,0.1,0.1,1
+                            size_hint_y: None
+                            height: dp(18)
+
+                SectionLabel:
+                    text: 'Combate'
+                GridLayout:
+                    cols: 3
+                    size_hint_y: None
+                    height: dp(64)
+                    spacing: dp(6)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        FieldLabel:
+                            text: 'CA'
+                            halign: 'center'
+                            text_size: self.size
+                        StyledInput:
+                            id: ac_input
+                            input_filter: 'int'
+                            halign: 'center'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        FieldLabel:
+                            text: 'Deslocamento'
+                            halign: 'center'
+                            text_size: self.size
+                        StyledInput:
+                            id: speed_input
+                            input_filter: 'int'
+                            halign: 'center'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        FieldLabel:
+                            text: 'Bônus Prof.'
+                            halign: 'center'
+                            text_size: self.size
+                        StyledInput:
+                            id: prof_input
+                            input_filter: 'int'
+                            halign: 'center'
+
+                FieldLabel:
+                    text: 'Iniciativa (calculada da DES)'
+                Label:
+                    id: initiative_label
+                    text: '+0'
+                    size_hint_y: None
+                    height: dp(24)
+                    color: 0.1, 0.1, 0.1, 1
+
+                FieldLabel:
+                    text: 'Pontos de Vida'
+                GridLayout:
+                    cols: 3
+                    size_hint_y: None
+                    height: dp(64)
+                    spacing: dp(6)
+                    BoxLayout:
+                        orientation: 'vertical'
+                        FieldLabel:
+                            text: 'Atual'
+                            halign: 'center'
+                            text_size: self.size
+                        StyledInput:
+                            id: hp_current_input
+                            input_filter: 'int'
+                            halign: 'center'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        FieldLabel:
+                            text: 'Máximo'
+                            halign: 'center'
+                            text_size: self.size
+                        StyledInput:
+                            id: hp_max_input
+                            input_filter: 'int'
+                            halign: 'center'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        FieldLabel:
+                            text: 'Temporário'
+                            halign: 'center'
+                            text_size: self.size
+                        StyledInput:
+                            id: hp_temp_input
+                            input_filter: 'int'
+                            halign: 'center'
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(44)
+                    spacing: dp(8)
+                    StyledInput:
+                        id: quick_amount_input
+                        hint_text: 'quantidade'
+                        input_filter: 'int'
+                    SmallButton:
+                        text: '-'
+                        size_hint_x: None
+                        width: dp(60)
+                        background_color: 0.6, 0.15, 0.15, 1
+                        on_release: root.quick_damage(quick_amount_input.text)
+                    SmallButton:
+                        text: '+'
+                        size_hint_x: None
+                        width: dp(60)
+                        background_color: 0.2, 0.5, 0.2, 1
+                        on_release: root.quick_heal(quick_amount_input.text)
+
+                SectionLabel:
+                    text: 'Ataques'
+                RecycleView:
+                    id: attacks_rv
+                    viewclass: 'AttackRow'
+                    size_hint_y: None
+                    height: dp(36) * (len(self.data) if self.data else 1)
+                    RecycleBoxLayout:
+                        default_size: None, dp(36)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+                StyledButton:
+                    text: '+ Adicionar ataque'
+                    on_release: root.add_attack()
+
+                SectionLabel:
+                    text: 'Inventário'
+                RecycleView:
+                    id: inventory_rv
+                    viewclass: 'InventoryRow'
+                    size_hint_y: None
+                    height: dp(52) * (len(self.data) if self.data else 1)
+                    RecycleBoxLayout:
+                        default_size: None, dp(52)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+                StyledButton:
+                    text: '+ Adicionar item'
+                    on_release: root.add_item()
+
+                SectionLabel:
+                    text: 'Magias'
+                FieldLabel:
+                    text: 'Habilidade de conjuração (ex: Sabedoria, CD 15, +7 para acertar)'
+                StyledInput:
+                    id: spellcasting_input
+                FieldLabel:
+                    text: 'Espaços de magia (ex: 1º: 4/4   2º: 2/2)'
+                StyledInput:
+                    id: spell_slots_input
+                RecycleView:
+                    id: spells_rv
+                    viewclass: 'SpellRow'
+                    size_hint_y: None
+                    height: dp(52) * (len(self.data) if self.data else 1)
+                    RecycleBoxLayout:
+                        default_size: None, dp(52)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+                StyledButton:
+                    text: '+ Adicionar magia'
+                    on_release: root.add_spell()
+
+                SectionLabel:
+                    text: 'Traços e Talentos (um por linha)'
+                TextInput:
+                    id: features_input
+                    size_hint_y: None
+                    height: dp(90)
+
+                SectionLabel:
+                    text: 'Recursos (ex: Fúria 2/3 usos)'
+                TextInput:
+                    id: resources_input
+                    size_hint_y: None
+                    height: dp(70)
+
+                SectionLabel:
+                    text: 'Personalidade / Anotações'
+                TextInput:
+                    id: notes_input
+                    size_hint_y: None
+                    height: dp(110)
+
+                SectionLabel:
+                    text: 'Histórico da Campanha'
+                StyledButton:
+                    text: '+ Registrar mudança'
+                    on_release: root.add_history_entry()
+                RecycleView:
+                    id: history_rv
+                    viewclass: 'HistoryRow'
+                    size_hint_y: None
+                    height: dp(50) * (len(self.data) if self.data else 1)
+                    RecycleBoxLayout:
+                        default_size: None, dp(50)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+
+                StyledButton:
+                    text: 'Salvar Ficha'
+                    size_hint_y: None
+                    height: dp(52)
+                    on_release: root.save_and_back()
