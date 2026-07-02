@@ -14,20 +14,15 @@ jobs:
       - name: Baixar o código
         uses: actions/checkout@v4
 
-      - name: Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Compilar APK com Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          workdir: .
-          buildozer_version: stable
+      - name: Compilar APK com a imagem oficial do Buildozer
+        run: |
+          docker run --rm \
+            --volume "${{ github.workspace }}":/home/user/hostcwd \
+            ghcr.io/kivy/buildozer:latest \
+            android debug
 
       - name: Publicar o APK gerado
         uses: actions/upload-artifact@v4
         with:
           name: ficha-dnd-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
